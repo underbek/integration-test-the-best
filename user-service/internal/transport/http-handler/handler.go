@@ -9,8 +9,8 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/shopspring/decimal"
-	"github.com/underbek/integration-test-the-best/user_service/api"
-	"github.com/underbek/integration-test-the-best/user_service/domain"
+	"github.com/underbek/integration-test-the-best/user-service/api"
+	"github.com/underbek/integration-test-the-best/user-service/internal/domain"
 )
 
 type UseCase interface {

@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/shopspring/decimal"
+	"gopkg.in/resty.v1"
 )
 
 type client struct {

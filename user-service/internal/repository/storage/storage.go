@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/lib/pq"
 	"github.com/shopspring/decimal"
-	"github.com/underbek/integration-test-the-best/user_service/domain"
+	"github.com/underbek/integration-test-the-best/user-service/internal/domain"
 
 	"github.com/jmoiron/sqlx"
 )
