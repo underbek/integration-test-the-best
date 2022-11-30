@@ -1,58 +1,27 @@
 ## Последовательность
+
 1. Показать что из себя пребставляет сервис
+
 2. Запустить и показать, что он заработал
+
 3. suite_test.go
+
 4. Зачатки тестов
-5. Пишем TestCreateUser
-6. Пытаемся запустить с помощью compose
-7. Убираем compose
 
+5. Если хоть что-то непонятно - пишите в чат/выкрикивайте)
 
+6. Пишем TestCreateUser
 
+7. Пытаемся запустить с помощью compose
 
+8. Убираем compose
 
-## Вставки
-### postgres
-```go
-PostgresDSN: "postgresql://user:password@localhost/postgres?sslmode=disable",
-```
+9. Пишем TestGetUser
 
-### Проверки
-```go
-	s.Assert().NotEqual(0, response.ID)
-	s.Assert().Equal(request.Name, response.Name)
-	s.Assert().Equal("0", response.Balance.String())
-```
+10. Пишем TestDepositBalance
 
-### conatiner
-```go
-	s.postgresContainer, err = testcontainer.NewPostgresContainer(ctx)
-	s.Require().NoError(err)
-```
+11. Запускаем все тесты и вопросы
 
-```go
+12. Причешим запросы
 
-```
-
-### httpmock
-```go
-	httpmock.RegisterResponder(
-		http.MethodPost,
-		billingAddr+"/deposit",
-		httpmock.NewStringResponder(http.StatusOK, ""),
-	)
-```
-
-### Фикстуры
-```go
-
-```
-
-```go
-requestBody := s.loader.LoadString("fixtures/api/deposit_user_request.json")
-expected := s.loader.LoadString("fixtures/api/deposit_user_response.json")
-```
-
-```go
-bytes.NewBufferString(requestBody)
-```
+13. Вопросы

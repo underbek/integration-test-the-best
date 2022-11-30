@@ -15,6 +15,8 @@ import (
 	"github.com/underbek/integration-test-the-best/user-service/internal/config"
 )
 
+const billingDSN = "http://localhost:8085"
+
 type TestSuite struct {
 	suite.Suite
 	app    *app.App

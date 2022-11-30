@@ -21,24 +21,27 @@ func New(hc *http.Client, addr string) *client {
 	}
 }
 
-func (c *client) UserDeposit(ctx context.Context, userID int, amount decimal.Decimal) error {
+func (c *client) UserDeposit(ctx context.Context, userID int, amount decimal.Decimal) (decimal.Decimal, error) {
 	request := UserDepositRequest{
 		ID:     userID,
 		Amount: amount,
 	}
 
+	depositResponse := &UserDepositResponse{}
+
 	res, err := c.client.R().
 		SetContext(ctx).
 		SetBody(request).
+		SetResult(depositResponse).
 		Post(c.addr + "/deposit")
 
 	if err != nil {
-		return err
+		return decimal.Zero, err
 	}
 
 	if res.IsError() {
-		return fmt.Errorf("code %d, response: %s", res.StatusCode(), res.String())
+		return decimal.Zero, fmt.Errorf("code %d, response: %s", res.StatusCode(), res.String())
 	}
 
-	return nil
+	return depositResponse.Amount, nil
 }

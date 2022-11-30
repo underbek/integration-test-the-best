@@ -12,6 +12,7 @@ import (
 
 func (s *TestSuite) TestCreateUser() {
 	// создаем реквест
+	// TODO: заполнить реквест
 	request := api.CreateUserRequest{}
 	buf := bytes.NewBufferString("")
 	err := json.NewEncoder(buf).Encode(request)
@@ -54,6 +55,7 @@ func (s *TestSuite) TestGetUser() {
 
 func (s *TestSuite) TestDepositBalance() {
 	// создаем реквест
+	// TODO: заполнить реквест
 	request := api.DepositBalanceRequest{}
 	buf := bytes.NewBufferString("")
 	err := json.NewEncoder(buf).Encode(request)

@@ -15,7 +15,7 @@ import (
 )
 
 // для чего ?
-var billingHttpClient *http.Client = http.DefaultClient
+var BillingHttpClient *http.Client = http.DefaultClient
 
 type App struct {
 	HttpServer *http.Server
@@ -36,7 +36,7 @@ func New(cfg config.Config) (*App, error) {
 	}
 
 	// создаем клиент к биллинг сервису
-	billingClient := billing.New(billingHttpClient, cfg.BillingDSN)
+	billingClient := billing.New(BillingHttpClient, cfg.BillingDSN)
 
 	// создаем use-case
 	uc := useCase.New(repo, billingClient)

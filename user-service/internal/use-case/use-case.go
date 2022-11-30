@@ -14,7 +14,7 @@ type Storage interface {
 }
 
 type Billing interface {
-	UserDeposit(ctx context.Context, userID int, amount decimal.Decimal) error
+	UserDeposit(ctx context.Context, userID int, amount decimal.Decimal) (decimal.Decimal, error)
 }
 
 type useCase struct {
@@ -38,7 +38,7 @@ func (c *useCase) GetUser(ctx context.Context, id int) (domain.User, error) {
 }
 
 func (c *useCase) UpdateBalance(ctx context.Context, id int, amount decimal.Decimal) (domain.User, error) {
-	err := c.billing.UserDeposit(ctx, id, amount)
+	billingAmount, err := c.billing.UserDeposit(ctx, id, amount)
 	if err != nil {
 		return domain.User{}, err
 	}
@@ -48,7 +48,7 @@ func (c *useCase) UpdateBalance(ctx context.Context, id int, amount decimal.Deci
 		return domain.User{}, err
 	}
 
-	user.Balance = user.Balance.Add(amount)
+	user.Balance = user.Balance.Add(billingAmount)
 
 	err = c.storage.UpdateBalance(ctx, id, user.Balance)
 	if err != nil {
