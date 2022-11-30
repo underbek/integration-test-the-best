@@ -4,10 +4,35 @@
 3. suite_test.go
 4. Зачатки тестов
 5. Пишем TestCreateUser
-6. Пытаемся запустить
-7. 
+6. Пытаемся запустить с помощью compose
+7. Убираем compose
+
+
+
+
 
 ## Вставки
+### postgres
+```go
+PostgresDSN: "postgresql://user:password@localhost/postgres?sslmode=disable",
+```
+
+### Проверки
+```go
+	s.Assert().NotEqual(0, response.ID)
+	s.Assert().Equal(request.Name, response.Name)
+	s.Assert().Equal("0", response.Balance.String())
+```
+
+### conatiner
+```go
+	s.postgresContainer, err = testcontainer.NewPostgresContainer(ctx)
+	s.Require().NoError(err)
+```
+
+```go
+
+```
 
 ### httpmock
 ```go

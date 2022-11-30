@@ -10,6 +10,7 @@ require (
 	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.8.1
 	gopkg.in/resty.v1 v1.12.0
+	github.com/docker/docker v20.10.20+incompatible // indirect
 )
 
 require (
