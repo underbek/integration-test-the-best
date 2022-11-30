@@ -82,7 +82,7 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := api.CreateUserResponse(userToApi(user))
+	response := api.GetUserResponse(userToApi(user))
 
 	err = json.NewEncoder(w).Encode(&response)
 	if err != nil {

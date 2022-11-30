@@ -20,3 +20,5 @@ type DepositBalanceRequest struct {
 }
 
 type DepositBalanceResponse User
+
+type GetUserResponse User
