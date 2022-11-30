@@ -14,11 +14,11 @@ type CreateUserRequest struct {
 
 type CreateUserResponse User
 
+type GetUserResponse User
+
 type DepositBalanceRequest struct {
 	ID     int             `json:"id"`
 	Amount decimal.Decimal `json:"amount"`
 }
 
 type DepositBalanceResponse User
-
-type GetUserResponse User
