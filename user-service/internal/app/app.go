@@ -14,11 +14,9 @@ import (
 	"github.com/underbek/integration-test-the-best/user-service/migrate"
 )
 
-// для чего ?
-var BillingHttpClient *http.Client = http.DefaultClient
-
 type App struct {
-	HttpServer *http.Server
+	HttpServer        *http.Server
+	BillingHttpClient *http.Client
 }
 
 func New(cfg config.Config) (*App, error) {
@@ -35,8 +33,10 @@ func New(cfg config.Config) (*App, error) {
 		return nil, err
 	}
 
+	billingHttpClient := http.DefaultClient
+
 	// создаем клиент к биллинг сервису
-	billingClient := billing.New(BillingHttpClient, cfg.BillingDSN)
+	billingClient := billing.New(billingHttpClient, cfg.BillingDSN)
 
 	// создаем use-case
 	uc := useCase.New(repo, billingClient)
@@ -54,7 +54,8 @@ func New(cfg config.Config) (*App, error) {
 	}
 
 	return &App{
-		HttpServer: srv,
+		HttpServer:        srv,
+		BillingHttpClient: billingHttpClient,
 	}, nil
 }
 
