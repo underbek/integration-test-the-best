@@ -3,20 +3,19 @@
 package integration_tests
 
 import (
-	"bytes"
 	"encoding/json"
 	"net/http"
 
+	"github.com/jarcoal/httpmock"
+	"github.com/underbek/integration-test-the-best/testutils"
+	"github.com/underbek/integration-test-the-best/testutils/fixtureloader"
 	"github.com/underbek/integration-test-the-best/user-service/api"
+	"github.com/underbek/integration-test-the-best/user-service/internal/repository/billing"
 )
 
 func (s *TestSuite) TestCreateUser() {
 	// создаем реквест
-	// TODO: заполнить реквест
-	request := api.CreateUserRequest{}
-	buf := bytes.NewBufferString("")
-	err := json.NewEncoder(buf).Encode(request)
-	s.Require().NoError(err)
+	buf := s.loader.LoadFile(s.T(), "fixtures/api/create_user_request.json")
 
 	// вызываем апи создания пользователя
 	res, err := s.server.Client().Post(s.server.URL+"/users", "", buf)
@@ -32,7 +31,10 @@ func (s *TestSuite) TestCreateUser() {
 	s.Require().NoError(err)
 
 	// проверяем
-	// TODO: добавить проверки
+	expected := s.loader.LoadTemplate(s.T(), "fixtures/api/create_user_response.json.temp", map[string]interface{}{
+		"id": response.ID,
+	})
+	testutils.JSONEq(s.T(), expected, response)
 }
 
 func (s *TestSuite) TestGetUser() {
@@ -44,22 +46,27 @@ func (s *TestSuite) TestGetUser() {
 
 	s.Require().Equal(http.StatusOK, res.StatusCode)
 
-	// получаем response
-	response := api.GetUserResponse{}
-	err = json.NewDecoder(res.Body).Decode(&response)
-	s.Require().NoError(err)
-
 	// проверяем
-	// TODO: добавить проверки
+	expected := s.loader.LoadFile(s.T(), "fixtures/api/get_user_response.json")
+	testutils.JSONEq(s.T(), expected, res.Body)
 }
 
 func (s *TestSuite) TestDepositBalance() {
 	// создаем реквест
-	// TODO: заполнить реквест
-	request := api.DepositBalanceRequest{}
-	buf := bytes.NewBufferString("")
-	err := json.NewEncoder(buf).Encode(request)
+	buf := s.loader.LoadFile(s.T(), "fixtures/api/deposit_user_request.json")
+
+	billingResponse := fixtureloader.LoadAPIFixture[billing.UserDepositResponse](
+		s.T(), s.loader, "fixtures/billing/user_deposit_response.json",
+	)
+
+	responder, err := httpmock.NewJsonResponder(http.StatusOK, billingResponse)
 	s.Require().NoError(err)
+
+	httpmock.RegisterResponder(
+		http.MethodPost,
+		billingDSN+"/deposit",
+		responder,
+	)
 
 	// вызываем апи депозита
 	res, err := s.server.Client().Post(s.server.URL+"/users/deposit", "", buf)
@@ -69,11 +76,6 @@ func (s *TestSuite) TestDepositBalance() {
 
 	s.Require().Equal(http.StatusOK, res.StatusCode)
 
-	// получаем response
-	response := api.DepositBalanceResponse{}
-	err = json.NewDecoder(res.Body).Decode(&response)
-	s.Require().NoError(err)
-
-	// проверяем
-	// TODO: добавить проверки
+	expected := s.loader.LoadFile(s.T(), "fixtures/api/deposit_user_response.json")
+	testutils.JSONEq(s.T(), expected, res.Body)
 }
